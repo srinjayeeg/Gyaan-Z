@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
 import StudentDashboard from "./pages/student-dash";
-import TeacherDashboard from "./pages/teach-dash";
+import TeacherDashboard from "./teacher"
 import MockTest from "./pages/mocktest";
 
 export default function App() {
