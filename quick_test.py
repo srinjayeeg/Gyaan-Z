@@ -35,7 +35,7 @@ def test_complete_flow():
         threshold = data.get('threshold', 0.5)
         is_in_scope = data.get('is_in_scope', False)
 
-        print("   ✅ API Response:"        print(f"   Similarity Score S(q, C): {score}")
+        print("   ✅ API Response:"        print(f"   Similarity Score S(q, C): {score}"))
         print(f"   Threshold τ: {threshold}")
         print(f"   Formula: {score} ≥ {threshold} = {score >= threshold}")
         print(f"   Decision: {'ACCEPT' if is_in_scope else 'REJECT'}")
@@ -63,7 +63,7 @@ def test_complete_flow():
         threshold = data.get('threshold', 0.5)
         is_in_scope = data.get('is_in_scope', False)
 
-        print("   ✅ API Response:"        print(f"   Similarity Score S(q, C): {score}")
+        print("   ✅ API Response:"        print(f"   Similarity Score S(q, C): {score}"))
         print(f"   Threshold τ: {threshold}")
         print(f"   Formula: {score} ≥ {threshold} = {score >= threshold}")
         print(f"   Decision: {'ACCEPT' if is_in_scope else 'REJECT'}")
@@ -74,7 +74,7 @@ def test_complete_flow():
     from vector_store import retrieve_chunks
     chunks = retrieve_chunks("python programming", "python1")
     print(f"   Chunks found for 'python programming': {len(chunks)}")
-    print("   ✅ Content retrieval working!"    print(f"   Sample: {chunks[0].get('content', '')[:100]}...")
+    print("   ✅ Content retrieval working!"    print(f"   Sample: {chunks[0].get('content', '')[:100]}..."))
 
     print("\n" + "=" * 50)
     print("🎯 SUMMARY:")
