@@ -29,7 +29,7 @@ class OutOfScopeDetector:
     relevant material exists to answer the question.
     """
     
-    def __init__(self, default_threshold: float = 0.3):
+    def __init__(self, default_threshold: float = 0.5):
         """
         Initialize the out-of-scope detector.
         
