@@ -283,7 +283,7 @@ def test_boundary_conditions():
     
     results = []
     
-    # Test 1: Threshold boundary (0.3)
+    # Test 1: Threshold boundary (0.5)
     print("Test 1: Query at threshold boundary")
     try:
         response = requests.post(
@@ -291,7 +291,7 @@ def test_boundary_conditions():
             json={
                 "message": "What is photosynthesis?",
                 "course_id": "biology101",
-                "threshold": 0.3
+                "threshold": 0.5
             },
             timeout=30
         )
@@ -353,14 +353,14 @@ def test_formula_demonstration():
             "name": "Query ACCEPTED",
             "query": "What is photosynthesis?",
             "course": "biology101",
-            "threshold": 0.3,
+            "threshold": 0.5,
             "explanation": "Query about core biology topic"
         },
         {
             "name": "Query REJECTED",
             "query": "How do I build a spaceship?",
             "course": "biology101",
-            "threshold": 0.3,
+            "threshold": 0.5,
             "explanation": "Query completely unrelated to biology"
         }
     ]

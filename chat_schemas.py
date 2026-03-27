@@ -9,7 +9,6 @@ class ChatRequest(BaseModel):
     course_id: str
     step: Optional[int] = 0  # Learning step (0-3) for progressive difficulty
     threshold: Optional[float] = 0.5  # Similarity threshold τ (default 0.5) for out-of-scope detection
-    temperature: Optional[float] = 0.7
     max_tokens: Optional[int] = 1024
     
     class Config:
@@ -18,8 +17,7 @@ class ChatRequest(BaseModel):
                 "message": "How do I solve quadratic equations?",
                 "course_id": "math101",
                 "step": 0,
-                "threshold": 0.3,
-                "temperature": 0.7,
+                "threshold": 0.5,
                 "max_tokens": 1024
             }
         }
@@ -45,7 +43,6 @@ class ChatHistoryRequest(BaseModel):
     course_id: str
     step: Optional[int] = 0  # Learning step (0-3) for progressive difficulty
     threshold: Optional[float] = 0.5  # Similarity threshold τ (default 0.5) for out-of-scope detection
-    temperature: Optional[float] = 0.7
     max_tokens: Optional[int] = 1024
     
     class Config:
@@ -57,8 +54,7 @@ class ChatHistoryRequest(BaseModel):
                 ],
                 "course_id": "biology101",
                 "step": 0,
-                "threshold": 0.3,
-                "temperature": 0.7,
+                "threshold": 0.5,
                 "max_tokens": 1024
             }
         }
@@ -85,7 +81,7 @@ class ChatResponse(BaseModel):
                 "step": 0,
                 "status": "success",
                 "similarity_score": 0.65,
-                "threshold": 0.3,
+                "threshold": 0.5,
                 "confidence": "high",
                 "error": None
             }
@@ -117,7 +113,7 @@ class OutOfScopeCheckRequest(BaseModel):
             "example": {
                 "message": "How do I build a rocket?",
                 "course_id": "biology101",
-                "threshold": 0.3
+                "threshold": 0.5
             }
         }
 
@@ -138,7 +134,7 @@ class OutOfScopeCheckResponse(BaseModel):
             "example": {
                 "is_in_scope": False,
                 "similarity_score": 0.15,
-                "threshold": 0.3,
+                "threshold": 0.5,
                 "reasoning": "Query similarity (0.15) below threshold (0.30). Topic not covered in course materials.",
                 "confidence_level": "very_low",
                 "metrics": {

@@ -85,8 +85,7 @@ async def chat(request: ChatRequest) -> ChatResponse:
             - message: User's question
             - course_id: Course ID for context retrieval
             - step: Learning step (0-3, default 0) for progressive difficulty
-            - threshold: Similarity threshold τ (default 0.3)
-            - temperature: Model creativity (0.0-1.0, default 0.7)
+            - threshold: Similarity threshold τ (default 0.5)
             - max_tokens: Max response length (default 1024)
     
     Returns:
@@ -108,7 +107,6 @@ async def chat(request: ChatRequest) -> ChatResponse:
             course_id=request.course_id,
             step=request.step,
             threshold=request.threshold,
-            temperature=request.temperature,
             max_tokens=request.max_tokens
         )
         return ChatResponse(**result)
@@ -134,8 +132,7 @@ async def chat_with_history(request: ChatHistoryRequest) -> ChatResponse:
             - messages: List of messages with roles (user/assistant)
             - course_id: Course ID for context retrieval
             - step: Learning step (0-3, default 0) for progressive difficulty
-            - threshold: Similarity threshold τ (default 0.3)
-            - temperature: Model creativity (0.0-1.0, default 0.7)
+            - threshold: Similarity threshold τ (default 0.5)
             - max_tokens: Max response length (default 1024)
     
     Returns:
@@ -156,7 +153,6 @@ async def chat_with_history(request: ChatHistoryRequest) -> ChatResponse:
             course_id=request.course_id,
             step=request.step,
             threshold=request.threshold,
-            temperature=request.temperature,
             max_tokens=request.max_tokens
         )
         return ChatResponse(**result)
@@ -334,7 +330,6 @@ async def chat_status():
                 "Course-based context retrieval",
                 "Citation-based responses",
                 "Out-of-scope detection using similarity scoring",
-                "Adjustable temperature and token limits",
                 "Configurable similarity threshold"
             ],
             "citation_format": "(Source: filename, Page X)",
@@ -372,7 +367,7 @@ async def detect_out_of_scope(request: OutOfScopeCheckRequest) -> OutOfScopeChec
         request: OutOfScopeCheckRequest containing:
             - message: User's question to check
             - course_id: Course ID for context retrieval
-            - threshold: Similarity threshold τ (default 0.3, range 0.0-1.0)
+            - threshold: Similarity threshold τ (default 0.5, range 0.0-1.0)
     
     Returns:
         OutOfScopeCheckResponse with:
@@ -384,11 +379,11 @@ async def detect_out_of_scope(request: OutOfScopeCheckRequest) -> OutOfScopeChec
         - recommendation: Actionable suggestion
     
     Example:
-        Request: {"message": "How do I build a rocket?", "course_id": "biology101", "threshold": 0.3}
+        Request: {"message": "How do I build a rocket?", "course_id": "biology101", "threshold": 0.5}
         Response: {
             "is_in_scope": false,
             "similarity_score": 0.15,
-            "threshold": 0.30,
+            "threshold": 0.50,
             "reasoning": "Query similarity (0.15) below threshold (0.30). Topic not covered...",
             "confidence_level": "very_low",
             "recommendation": "❌ Out of Scope: Query not covered in course materials..."

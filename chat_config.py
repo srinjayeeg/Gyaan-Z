@@ -23,7 +23,6 @@ class ChatConfig:
             "default_socratic_prompt": None,
             "course_prompts": {},
             "chat_settings": {
-                "default_temperature": 0.7,
                 "default_max_tokens": 1024,
                 "default_num_chunks": 5
             }
@@ -58,7 +57,7 @@ class ChatConfig:
         return self.config.get("course_prompts", {}).get(course_id)
     
     def update_chat_settings(self, **kwargs):
-        """Update chat settings like temperature, max_tokens, etc."""
+        """Update chat settings like max_tokens, etc."""
         if "chat_settings" not in self.config:
             self.config["chat_settings"] = {}
         

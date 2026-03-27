@@ -99,7 +99,6 @@ def test_single_turn_chat():
             "message": "What is photosynthesis and how does it work?",
             "course_id": "biology101",
             "step": step,
-            "temperature": 0.7,
             "max_tokens": 1024
         }
         
@@ -155,7 +154,6 @@ def test_multi_turn_chat():
         "messages": messages,
         "course_id": "science101",
         "step": 1,  # Using step 1 for deeper exploration
-        "temperature": 0.7,
         "max_tokens": 1024
     }
     

@@ -163,7 +163,6 @@ IMPORTANT INSTRUCTIONS
         step: int = 0,
         num_chunks: int = 5,
         threshold: float = None,
-        temperature: float = 0.7,
         max_tokens: int = 1024
     ) -> Dict[str, str]:
         """
@@ -175,7 +174,6 @@ IMPORTANT INSTRUCTIONS
             step: Learning step (0-3) for progressive difficulty
             num_chunks: Number of chunks to retrieve (default: 5)
             threshold: Similarity threshold for out-of-scope detection
-            temperature: Model temperature for creativity (0.0-1.0)
             max_tokens: Maximum tokens in response
 
         Returns:
@@ -221,7 +219,6 @@ IMPORTANT INSTRUCTIONS
             response = self.model.generate_content(
                 full_prompt,
                 generation_config=genai.types.GenerationConfig(
-                    temperature=temperature,
                     max_output_tokens=max_tokens,
                 )
             )
@@ -253,7 +250,6 @@ IMPORTANT INSTRUCTIONS
         course_id: str,
         step: int = 0,
         threshold: float = None,
-        temperature: float = 0.7,
         max_tokens: int = 1024
     ) -> Dict[str, str]:
         """
@@ -264,7 +260,6 @@ IMPORTANT INSTRUCTIONS
             course_id: The course ID for context retrieval
             step: Learning step (0-3) for progressive difficulty
             threshold: Similarity threshold for out-of-scope detection
-            temperature: Model temperature for creativity
             max_tokens: Maximum tokens in response
 
         Returns:
@@ -345,7 +340,6 @@ IMPORTANT INSTRUCTIONS
             response = self.model.generate_content(
                 full_prompt,
                 generation_config=genai.types.GenerationConfig(
-                    temperature=temperature,
                     max_output_tokens=max_tokens,
                 )
             )
