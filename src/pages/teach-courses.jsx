@@ -1,6 +1,10 @@
 import { useRef, useState } from "react";
-import { uploadPDF, deleteCourse } from "../routing/api/index";
+import { uploadPDF, deleteCourse, getCourses } from "../routing/api/index";;
 import { Icons } from "../components/Icons";
+const PREDEFINED_COURSES = [
+    { id: "java101", name: "Java 101" },
+    { id: "Python101", name: "101" },
+];
 
 export default function CoursesPage({ courses, setCourses }) {
     const fileInputRef = useRef(null);
@@ -9,6 +13,8 @@ export default function CoursesPage({ courses, setCourses }) {
     const [uploadSuccess, setUploadSuccess] = useState("");
     const [search, setSearch] = useState("");
     const [deleting, setDeleting] = useState(null);
+    const [selectedCourseId, setSelectedCourseId] = useState("");
+    const [showUploadModal, setShowUploadModal] = useState(false);
 
     const filtered = courses.filter((c) =>
         c.name?.toLowerCase().includes(search.toLowerCase())
@@ -16,28 +22,27 @@ export default function CoursesPage({ courses, setCourses }) {
 
     const handleUpload = async (e) => {
         const file = e.target.files[0];
-        if (!file) return;
+        if (!file || !selectedCourseId) {
+            setUploadError("Please select a course first");
+            return;
+        }
+        
         setUploading(true);
         setUploadError("");
         setUploadSuccess("");
+        
         try {
-            const result = await uploadPDF(file);
-            setCourses((prev) => [
-                ...prev,
-                {
-                    id: result.courseId,
-                    name: result.courseName || file.name,
-                    pageCount: result.pageCount,
-                    uploadedAt: new Date().toISOString(),
-                },
-            ]);
-            setUploadSuccess(`"${file.name}" uploaded successfully!`);
+            const result = await uploadPDF(file, selectedCourseId);
+
+            const updated = await getCourses();
+            setCourses(updated);
+    
+            setUploadSuccess(`Uploaded ${result.document_name} — ${result.chunks_created} chunks indexed`);
+            setShowUploadModal(false);
+            setSelectedCourseId("");
             setTimeout(() => setUploadSuccess(""), 4000);
-        } catch {
-            setUploadError("Upload failed. Make sure the RAG backend is running.");
-        } finally {
-            setUploading(false);
-            e.target.value = "";
+        } catch (err) {
+            setUploadError(err.message || "Upload failed");
         }
     };
 
@@ -64,7 +69,7 @@ export default function CoursesPage({ courses, setCourses }) {
                     </p>
                 </div>
                 <button
-                    onClick={() => fileInputRef.current.click()}
+                    onClick={() => setShowUploadModal(true)}
                     disabled={uploading}
                     style={{
                         display: "flex", alignItems: "center", gap: 8,
@@ -78,19 +83,80 @@ export default function CoursesPage({ courses, setCourses }) {
                 </button>
             </div>
 
-            <input
-                ref={fileInputRef}
-                type="file"
-                accept=".pdf,.docx,.txt"
-                style={{ display: "none" }}
-                onChange={handleUpload}
-            />
+            {/* Upload Modal */}
+            {showUploadModal && (
+                <div style={{
+                    position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", 
+                    display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000
+                }}>
+                    <div style={{
+                        background: "#fff", borderRadius: 16, padding: 24, width: "90%", maxWidth: 400,
+                        boxShadow: "0 20px 60px rgba(0,0,0,0.3)"
+                    }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#1e3a5f", margin: 0, marginBottom: 16 }}>
+                            Upload to Course
+                        </h2>
+                        
+                        <select
+                            value={selectedCourseId}
+                            onChange={(e) => setSelectedCourseId(e.target.value)}
+                            style={{
+                                width: "100%",
+                                padding: "10px 12px",
+                                borderRadius: 8,
+                                border: "2px solid #e5e7eb",
+                                fontSize: 14,
+                                marginBottom: 16,
+                                fontFamily: "inherit",
+                            }}
+                        >
+                            <option value="">Select a course...</option>
+                            {PREDEFINED_COURSES.map((c) => (
+                                <option key={c.id} value={c.id}>
+                                    {c.name} ({c.id})
+                                </option>
+                            ))}
+                        </select>
 
-            {uploadError && (
-                <div style={{ background: "#fee2e2", color: "#dc2626", borderRadius: 12, padding: "10px 16px", fontSize: 13 }}>
-                    {uploadError}
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept=".pdf,.docx,.txt"
+                            style={{ display: "none" }}
+                            onChange={handleUpload}
+                        />
+
+                        <div style={{ display: "flex", gap: 10 }}>
+                            <button
+                                onClick={() => fileInputRef.current.click()}
+                                disabled={uploading || !selectedCourseId}
+                                style={{
+                                    flex: 1, background: "#3b82f6", color: "#fff", border: "none",
+                                    borderRadius: 8, padding: 10, fontWeight: 600, cursor: "pointer"
+                                }}
+                            >
+                                {uploading ? "Uploading…" : "Select File"}
+                            </button>
+                            <button
+                                onClick={() => setShowUploadModal(false)}
+                                style={{
+                                    flex: 1, background: "#e5e7eb", color: "#1e3a5f", border: "none",
+                                    borderRadius: 8, padding: 10, fontWeight: 600, cursor: "pointer"
+                                }}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+
+                        {uploadError && (
+                            <div style={{ background: "#fee2e2", color: "#dc2626", borderRadius: 8, padding: 10, fontSize: 13, marginTop: 12 }}>
+                                {uploadError}
+                            </div>
+                        )}
+                    </div>
                 </div>
             )}
+
             {uploadSuccess && (
                 <div style={{ background: "#dcfce7", color: "#16a34a", borderRadius: 12, padding: "10px 16px", fontSize: 13 }}>
                     {uploadSuccess}

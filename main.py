@@ -12,11 +12,21 @@ from chat_config import ChatConfig
 from out_of_scope_detector import OutOfScopeDetector
 import os
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
+import json, glob
 
 # Load environment variables from .env file
 load_dotenv()
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Initialize chat service and config
 try:
@@ -46,7 +56,6 @@ async def upload_file(file: UploadFile = File(...), course_id: str = Query(...))
         "chunks_created": len(chunks),
         "document_name": file.filename
     }
-
 
 @app.get("/retrieve/")
 async def retrieve(query: str = Query(...), course_id: str = Query(...)):

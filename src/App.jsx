@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
-import StudentDashboard from "./pages/student-dash";
 import TeacherDashboard from "./teacher"
 import MockTest from "./pages/mocktest";
+import StudentDashboard from "./student";
 
 export default function App() {
   return (

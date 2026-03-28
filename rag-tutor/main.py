@@ -8,6 +8,16 @@ app = FastAPI()
 # 🔥 GLOBAL DB
 vector_store = None
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+vector_stores = {}
+course_registry = {}
 
 @app.post("/upload/")
 async def upload_file(file: UploadFile = File(...)):
