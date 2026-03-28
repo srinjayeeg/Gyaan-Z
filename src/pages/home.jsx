@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import homeGirlImg from "../assets/home-girl.png";
+import logoImg from "../assets/gyaan-z.jpeg";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -155,7 +156,7 @@ export default function Home() {
 
             <nav className="flex items-center justify-between px-8 py-4">
             <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-blue-600 font-black text-xl">R</div>
+                <img src={logoImg} alt="Gyaan-Z logo" className="w-12 h-12 object-contain rounded-full" />
                     <span className="text-blue-900 font-bold text-lg hidden sm:block">Gyaan-Z</span>
                 </div>
                 <div className="flex items-center gap-6">

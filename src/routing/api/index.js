@@ -3,7 +3,6 @@ const RAG_BASE = "http://localhost:8000";
 export async function uploadPDF(file, courseId) {
     const formData = new FormData();
 
-    // ✅ MUST match FastAPI param name
     formData.append("file", file);
 
     try {
@@ -15,7 +14,6 @@ export async function uploadPDF(file, courseId) {
             }
         );
 
-        // ✅ Better error handling (IMPORTANT)
         if (!res.ok) {
             const errorText = await res.text();
             throw new Error(errorText || "Upload failed");
